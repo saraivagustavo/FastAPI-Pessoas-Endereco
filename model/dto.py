@@ -1,31 +1,26 @@
+#DTO: é como se fosse um "padrão" para os dados que serão enviados e recebidos pela API, define exatamente quais campos e com quais tipos de dados uma informação deve ser estruturaado para transitar entre cliente e servidor
+
 from model.models import EnderecoBase, PessoaBase
 from typing import List,Optional
 from sqlmodel import Field
 
+#===== DTO para Pessoa =====
 class PessoaCreate(PessoaBase):
-    pass 
+    pass #pass vai herdar os campos de PessoaBase lá em models.py
 
-class PessoaPublic(PessoaBase):
-    id: int
-    model_config = {"from_attributes": True}
-
-class PessoaWithEndereco(PessoaPublic):
-    model_config = {"from_attributes": True}
-    enderecos: List["EnderecoPublic"] = []
-
-class PessoaUpdate(PessoaBase):
+class PessoaUpdate(PessoaBase): #todos os campos vão ser opcionais para poder atualizar parcialmente uma pessoa, não sendo necessário enviar todos os campos sempre que for atualizar
     nome: Optional[str] = Field(default=None, min_length=2, max_length=120)
     email: Optional[str] = Field(max_length=120, default=None)
 
-class PessoaRead(PessoaBase):
+class PessoaRead(PessoaBase): # buscar a pessoa sem os endereços
     id : int
 
-class EnderecoPublic(EnderecoBase):
-    id : int
-    id_pessoa: Optional[int] = None
-    model_config = {"from_attributes": True}
+class PessoaComEndereco(PessoaRead): # buscar a pessoa com os endereços, é bom separar para não ter que puxar todos os endereços sempre que buscar uma pessoa
+    enderecos: List["EnderecoCreate"] = []
 
-class EnderecoUpdate(EnderecoBase):
+
+# ===== DTO para Endereço =====
+class EnderecoUpdate(EnderecoBase): #todos os campos vão ser opcionais para poder atualizar parcialmente um endereço, não sendo necessário enviar todos os campos sempre que for atualizar
     logradouro: Optional[str] = Field(default=None,max_length=120)
     numero: Optional[int] = Field(default=None)
     estado: Optional[str] = Field(default=None,max_length=2, min_length=2)
@@ -34,9 +29,9 @@ class EnderecoUpdate(EnderecoBase):
     id_pessoa : Optional[int] = None
 
 class EnderecoCreate(EnderecoBase):
-    id_pessoa: Optional[int] = None # mesma ideia de criar vinculado do hero
+    id_pessoa: int = Field(foreign_key="pessoa.id") # chave estrangeira obrigatória para criar um endereço, garantindo que todo endereço pertence a uma pessoa
 
-class EnderecoRead(EnderecoBase):
+class EnderecoRead(EnderecoBase): #seria o mesmo que EnderecoPublic, só mudei o nome para seguir o CRUD (read)
     id : int
     id_pessoa : Optional[int] = None
     
