@@ -62,7 +62,7 @@ Siga os passos abaixo para configurar e executar o projeto em seu ambiente local
 **1. Clone o repositório:**
 
 ```bash
-git clone [https://URL-DO-SEU-REPOSITORIO.git](https://URL-DO-SEU-REPOSITORIO.git)
+git clone [https://github.com/saraivagustavo/FastAPI-Pessoas-Endereco.git](https://github.com/saraivagustavo/FastAPI-Pessoas-Endereco.git)
 cd nome-do-diretorio
 ```
 
