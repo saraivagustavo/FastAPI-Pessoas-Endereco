@@ -15,7 +15,7 @@ class PessoaUpdate(PessoaBase): #todos os campos vão ser opcionais para poder a
 class PessoaRead(PessoaBase): # buscar a pessoa sem os endereços
     id : int
 
-class PessoaComEndereco(PessoaRead): # buscar a pessoa com os endereços, é bom separar para não ter que puxar todos os endereços sempre que buscar uma pessoa
+class PessoaReadComEndereco(PessoaRead): # buscar a pessoa com os endereços, é bom separar para não ter que puxar todos os endereços sempre que buscar uma pessoa
     enderecos: List["EnderecoCreate"] = []
 
 

@@ -6,11 +6,13 @@ from util.database import get_session
 from repository.generic import Repository
 from service.generic import Service
 
-ModelT = TypeVar("ModelT", bound=SQLModel)
-CreateT = TypeVar("CreateT", bound=SQLModel)
-UpdateT = TypeVar("UpdateT", bound=SQLModel)
-ReadT   = TypeVar("ReadT", bound=SQLModel)
+# Type variables para modelos e schemas
+ModelT = TypeVar("ModelT", bound=SQLModel) #modelo da tabela (Pessoa, Endereco)
+CreateT = TypeVar("CreateT", bound=SQLModel) #DTO para criar o modelo (PessoaCreate, EnderecoCreate)
+UpdateT = TypeVar("UpdateT", bound=SQLModel) #DTO para atualizar o modelo (PessoaUpdate, EnderecoUpdate)
+ReadT   = TypeVar("ReadT", bound=SQLModel) #DTO para ler o modelo (PessoaRead, EnderecoRead)
 
+# Classe de hooks para validações personalizadas
 class Hooks(Generic[ModelT, CreateT, UpdateT]):
     """
     Pontos de extensão opcionais para regras específicas.
@@ -19,8 +21,9 @@ class Hooks(Generic[ModelT, CreateT, UpdateT]):
     def pre_update(self, payload: UpdateT, session: Session, obj: ModelT) -> None: ...
     def pre_delete(self, session: Session, obj: ModelT) -> None: ...
 
+# Função para criar um roteador CRUD genérico 
 def create_crud_router(
-    *,
+    *, #esse asterisco força que os argumentos sejam nomeados
     model: Type[ModelT],
     create_schema: Type[CreateT],
     update_schema: Type[UpdateT],
@@ -39,12 +42,19 @@ def create_crud_router(
     service: Service[ModelT, CreateT, UpdateT] = Service(repo)
     _hooks = hooks or Hooks()  # instancia vazia (métodos no-op)
 
+    #--- DEFINIÇÃO DOS ENDPOINTS ---
+    #cada endpoint usa o service para fazer as operações no banco de dados
+
+    #----------------------------------------------
+    #endpoint para criar um novo registro (POST/prefixo/)
     @router.post("/", response_model=read_schema, status_code=201)
     def create_item(payload: create_schema, session: Session = Depends(get_session)): # type: ignore
         if hasattr(_hooks, "pre_create") and callable(_hooks.pre_create):
             _hooks.pre_create(payload, session)
         return service.create(session, payload)
 
+    #----------------------------------------------
+    #endpoint para listar todos os registros (GET/prefixo/)
     @router.get("/", response_model=list[read_schema])
     def list_items(
         session: Session = Depends(get_session),
@@ -53,6 +63,8 @@ def create_crud_router(
     ):
         return service.list(session, offset, limit)
 
+    #----------------------------------------------
+    #endpoint para buscar um registro pelo id (GET/prefixo/{item_id})
     @router.get("/{item_id}", response_model=read_schema)
     def get_item(item_id: int, session: Session = Depends(get_session)):
         obj = service.get(session, item_id)
@@ -60,6 +72,8 @@ def create_crud_router(
             raise HTTPException(404, "Not found")
         return obj
 
+    #----------------------------------------------
+    #endpoint para atualizar um registro pelo id (PATCH/prefixo/{item_id}) *patch significa atualização parcial, não é obrigado enviar todos os campos, o PUT é atualização total, tem que enviar todos os campos
     @router.patch("/{item_id}", response_model=read_schema)
     def update_item(item_id: int, payload: update_schema, session: Session = Depends(get_session)): # type: ignore
         obj = service.get(session, item_id)
@@ -72,6 +86,8 @@ def create_crud_router(
         except ValueError:
             raise HTTPException(404, "Not found")
 
+    #----------------------------------------------
+    #enpoint para deletar um registro pelo id (DELETE/prefixo/{item_id})
     @router.delete("/{item_id}", status_code=204)
     def delete_item(item_id: int, session: Session = Depends(get_session)):
         obj = service.get(session, item_id)
