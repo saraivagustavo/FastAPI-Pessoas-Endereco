@@ -17,6 +17,7 @@ class PessoaRead(PessoaBase): # buscar a pessoa sem os endereços
 
 class PessoaReadComEndereco(PessoaRead): # buscar a pessoa com os endereços, é bom separar para não ter que puxar todos os endereços sempre que buscar uma pessoa
     enderecos: List["EnderecoCreate"] = []
+    
 
 
 # ===== DTO para Endereço =====

@@ -38,7 +38,7 @@ repo = Repository(Pessoa)
 service = Service(repo) 
 
 @router.get("/{item_id}/enderecos", response_model=PessoaReadComEndereco) #sobreescreve a definição que foi criada dentro do create_crud_router usando o modelo de PessoaReadComEndereco que puxa os endereços
-def get_pessoa_with_enderecos(item_id: int, session: Session = Depends(get_session)):
+def get_pessoa_com_enderecos(item_id: int, session: Session = Depends(get_session)):
     pessoa = service.get(session, item_id) #puxa a pessoa pelo id
     if not pessoa:
         raise HTTPException(status_code=404, detail="Pessoa não encontrada")
