@@ -60,3 +60,4 @@ def health():
     return{"status":"ok"}
 #uvicorn main:app --reload #comando para rodar o servidor localmente
 #teste do codewise
+#segundo teste do codewise, commit e push

@@ -30,22 +30,24 @@ Com base nos arquivos modificados (`main.py`, `service/generic.py`), podemos inf
 ```diff
 --- a/main.py
 +++ b/main.py
-@@ -57,4 +57,5 @@ app.include_router(enderecos_router)
- 
+@@ -57,4 +57,6 @@ app.include_router(enderecos_router)
+
  @app.get('/')
  def health():
 -    return{"status":"ok"}
 \ No newline at end of file
 +    return{"status":"ok"}
 +#uvicorn main:app --reload #comando para rodar o servidor localmente
++#teste do codewise
 \ No newline at end of file
 ```
 
-*   **Mudança:** Adição de uma linha de comentário com o comando `uvicorn` para executar o servidor localmente.
-*   **Impacto:** Pequeno. Apenas adiciona uma instrução útil para desenvolvedores.
+*   **Mudança:** Adição de uma linha de comentário com o comando `uvicorn` para executar o servidor localmente and a line containing "teste do codewise".
+*   **Impacto:** Pequeno. Apenas adiciona uma instrução útil para desenvolvedores, and a test line.
 *   **Considerações:**
-    *   Embora útil, esse tipo de instrução pode ser melhor documentado em um arquivo `README.md` ou similar, em vez de diretamente no código.
-    *   A ausência de uma linha no final do arquivo foi corrigida, o que é uma boa prática.
+    *   Embora útil, esse tipo de instrução pode ser melhor documentado em um arquivo `README.md` ou similar, em vez de diretamente no código.  The 'teste do codewise' line is likely for testing purposes and should be removed in production.
+    *   The addition of the "teste do codewise" line does not follow best practices and should be removed.
+    *   The absence of a newline at the end of the file was corrected, which is a good practice.
 
 ### `service/generic.py`
 
@@ -57,19 +59,19 @@ Com base nos arquivos modificados (`main.py`, `service/generic.py`), podemos inf
      def get(self, session: Session, id: Any) -> Optional[ModelT]:
          return self.repo.get(session, id)
 -    #------------------------------------
- 
+
      #------------------------------------
      #método pra listar todos os registros, com paginação (offset e limit)
      def list(self, session: Session, offset: int = 0, limit: int = 100) -> List[ModelT]:
          return self.repo.list(session, offset, limit)
 -    #------------------------------------
- 
+
      #------------------------------------
      #método pra criar um novo registro
      def create(self, session: Session, data: CreateT) -> ModelT:
          return self.repo.create(session, data)
 -    #------------------------------------
- 
+
      #------------------------------------
      #método pra atualizar um registro
 @@ -32,7 +29,6 @@ class Service(Generic[ModelT, CreateT, UpdateT]):
@@ -77,14 +79,14 @@ Com base nos arquivos modificados (`main.py`, `service/generic.py`), podemos inf
              raise ValueError("Not found")
          return self.repo.update(session, obj, data)
 -    #------------------------------------
- 
+
      #------------------------------------
      #método pra deletar um registro
-@@ -41,4 +36,3 @@ class Service(Generic[ModelT, CreateT, UpdateT]):
+@@ -41,4 +37,3 @@ class Service(Generic[ModelT, CreateT, UpdateT]):
          if not obj:
              raise ValueError("Not found")
          return self.repo.delete(session, obj)
---    #------------------------------------
+-    #------------------------------------
 \ No newline at end of file
 ```
 
@@ -153,5 +155,5 @@ Com base nos arquivos modificados (`main.py`, `service/generic.py`), podemos inf
 
 ## Conclusão
 
-A estrutura atual do projeto parece ser básica, mas funcional. As sugestões de melhorias visam aumentar a escalabilidade, a manutenibilidade e a testabilidade do código. A implementação dessas sugestões pode resultar em um projeto mais robusto e fácil de manter a longo prazo.
+A estrutura atual do projeto parece ser básica, mas funcional. As sugestões de melhorias visam aumentar a escalabilidade, a manutenibilidade e a testabilidade do código. A implementação dessas sugestões pode resultar em um projeto mais robusto e fácil de manter a longo prazo.  The "teste do codewise" line added to `main.py` should be removed.
 ```

@@ -214,3 +214,6 @@ __marimo__/
 .venv
 # Streamlit
 .streamlit/secrets.toml
+
+analise-concluidas
+.analise-concluidas

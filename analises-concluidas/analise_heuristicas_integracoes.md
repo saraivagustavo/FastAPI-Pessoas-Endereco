@@ -79,7 +79,7 @@ graph LR
 
 #### 6. `service/generic.py`
 
-*   **Análise:** Classe genérica para serviços CRUD.
+*   **Análise:** Classe genérica para serviços CRUD. A remoção das linhas de comentário (`#------------------------------------`) após cada método melhora a legibilidade.
 *   **Sugestões:**
     *   Adicionar tratamento de exceções mais específico para cada operação CRUD.
     *   Implementar logging para rastrear o fluxo de execução e identificar erros.
@@ -95,13 +95,14 @@ graph LR
 
 ### Melhorias Gerais
 
-*   **Documentação:** Criar documentação detalhada para todas as APIs e componentes do sistema.
+*   **Documentação:** Criar documentação detalhada para todas as APIs e componentes do sistema.  Move the `uvicorn` command from `main.py` to the documentation (e.g., README.md).
 *   **Testes:** Implementar testes unitários e de integração para garantir a qualidade do código.
 *   **Logging:** Implementar logging para rastrear o fluxo de execução e identificar erros.
 *   **Monitoramento:** Implementar monitoramento para coletar métricas sobre o desempenho do sistema e identificar gargalos.
 *   **Segurança:** Implementar medidas de segurança para proteger o sistema contra ataques.
+*   **Remover Código de Teste:** Remover a linha `"teste do codewise"` de `main.py` pois não pertence ao código de produção.
 
 ### Conclusão
 
-As mudanças no commit são pequenas, mas fornecem um ponto de partida para avaliar a arquitetura e as possíveis integrações do sistema. Ao seguir as sugestões acima, é possível melhorar a escalabilidade, a manutenibilidade e a segurança do sistema.
+As mudanças no commit são pequenas, mas fornecem um ponto de partida para avaliar a arquitetura e as possíveis integrações do sistema. Ao seguir as sugestões acima, incluindo a remoção do código de teste e a movimentação do comando `uvicorn` para a documentação, é possível melhorar a escalabilidade, a manutenibilidade e a segurança do sistema.
 ```
