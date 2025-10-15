@@ -59,3 +59,4 @@ app.include_router(enderecos_router)
 def health():
     return{"status":"ok"}
 #uvicorn main:app --reload #comando para rodar o servidor localmente
+#teste do codewise
