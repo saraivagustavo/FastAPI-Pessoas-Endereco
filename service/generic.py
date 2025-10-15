@@ -11,19 +11,16 @@ class Service(Generic[ModelT, CreateT, UpdateT]):
     #método pra buscar um registro pelo id
     def get(self, session: Session, id: Any) -> Optional[ModelT]:
         return self.repo.get(session, id)
-    #------------------------------------
 
     #------------------------------------
     #método pra listar todos os registros, com paginação (offset e limit)
     def list(self, session: Session, offset: int = 0, limit: int = 100) -> List[ModelT]:
         return self.repo.list(session, offset, limit)
-    #------------------------------------
 
     #------------------------------------
     #método pra criar um novo registro
     def create(self, session: Session, data: CreateT) -> ModelT:
         return self.repo.create(session, data)
-    #------------------------------------
 
     #------------------------------------
     #método pra atualizar um registro
@@ -32,7 +29,6 @@ class Service(Generic[ModelT, CreateT, UpdateT]):
         if not obj:
             raise ValueError("Not found")
         return self.repo.update(session, obj, data)
-    #------------------------------------
 
     #------------------------------------
     #método pra deletar um registro
@@ -41,4 +37,3 @@ class Service(Generic[ModelT, CreateT, UpdateT]):
         if not obj:
             raise ValueError("Not found")
         return self.repo.delete(session, obj)
-    #------------------------------------
